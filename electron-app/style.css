@@ -1,0 +1,13 @@
+h1 {
+    color: orange;
+}
+
+body { 
+    background-color: #222233;
+    color: #AACCFF;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 10px;
+    -webkit-app-region: drag;
+}
