@@ -16,17 +16,11 @@ let tray = null;
 
 function createWindow() {
   mainWindow1 = new BrowserWindow({ width: 800, height: 600 })
-  // mainWindow2 = new BrowserWindow({ show: false, width: 800, height: 600, frame: false })
   mainWindow1.loadURL(`file://${__dirname}/one.html`)
-  // mainWindow2.loadURL(`file://${__dirname}/two.html`)
-  mainWindow1.webContents.openDevTools();
-  // mainWindow2.webContents.openDevTools();
+  // mainWindow1.webContents.openDevTools();
   mainWindow1.on('closed', () => {
     mainWindow1 = null
   })
-  // mainWindow2.on('closed', () => {
-  //   mainWindow2 = null
-  // })
 
   ipc.on('open-error-dialog', function (event) {
     dialog.showErrorBox('An error message', 'Demo of an error message')
@@ -51,7 +45,7 @@ function createWindow() {
 function createWindow2() {
   mainWindow2 = new BrowserWindow({ show: false, width: 800, height: 600, frame: false })
   mainWindow2.loadURL(`file://${__dirname}/two.html`)
-  mainWindow2.webContents.openDevTools();
+  // mainWindow2.webContents.openDevTools();
   mainWindow2.on('closed', () => {
     mainWindow2 = null
   })
@@ -74,7 +68,26 @@ app.on('ready', function () {
           }
         },
         {
+          label: 'Toogle DevTool',
+          accelerator: (function () {
+            if (process.platform === 'darwin') {
+              return 'Ctrl+Command+F'
+            } else {
+              return 'Ctrl + I'
+            }
+          })(),
+          click: function (item, focusedWindow) {
+            if (focusedWindow) {
+              focusedWindow.toggleDevTools();
+            }
+          }
+        },
+
+        { role: 'reload' },
+
+        {
           label: 'Quit',
+          accelerator: 'CmdOrCtrl + Q',
           click() {
             app.quit()
           }
