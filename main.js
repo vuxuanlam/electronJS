@@ -1,28 +1,32 @@
 const electron = require('electron')
+const path = require('path')
 const app = electron.app
 const ipc = electron.ipcMain
 const BrowserWindow = electron.BrowserWindow
 const dialog = electron.dialog
 const Menu = electron.Menu
 const MenuItem = electron.MenuItem
+const Tray = electron.Tray
+const iconPath = path.join(__dirname, 'favicon.ico')
 const globalShortcut = electron.globalShortcut
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 let mainWindow1, mainWindow2, parentWindow, childWindow;
+let tray = null;
 
 function createWindow() {
   mainWindow1 = new BrowserWindow({ width: 800, height: 600 })
-  mainWindow2 = new BrowserWindow({ show: false, width: 800, height: 600, frame: false })
+  // mainWindow2 = new BrowserWindow({ show: false, width: 800, height: 600, frame: false })
   mainWindow1.loadURL(`file://${__dirname}/one.html`)
-  mainWindow2.loadURL(`file://${__dirname}/two.html`)
+  // mainWindow2.loadURL(`file://${__dirname}/two.html`)
   mainWindow1.webContents.openDevTools();
-  mainWindow2.webContents.openDevTools();
+  // mainWindow2.webContents.openDevTools();
   mainWindow1.on('closed', () => {
     mainWindow1 = null
   })
-  mainWindow2.on('closed', () => {
-    mainWindow2 = null
-  })
+  // mainWindow2.on('closed', () => {
+  //   mainWindow2 = null
+  // })
 
   ipc.on('open-error-dialog', function (event) {
     dialog.showErrorBox('An error message', 'Demo of an error message')
@@ -32,9 +36,9 @@ function createWindow() {
   ipc.on('sync-message', function (event) {
     event.returnValue = 'sync-reply';
   })
-  mainWindow2.once('ready-to-show', () => {
-    mainWindow2.show();
-  })
+  // mainWindow2.once('ready-to-show', () => {
+  //   mainWindow2.show();
+  // })
 
   // parentWindow = new BrowserWindow({ title: "parent" });
   // childWindow = new BrowserWindow({ show: false, parent: parentWindow, title: 'child' });
@@ -44,9 +48,39 @@ function createWindow() {
   // });
 }
 
+function createWindow2() {
+  mainWindow2 = new BrowserWindow({ show: false, width: 800, height: 600, frame: false })
+  mainWindow2.loadURL(`file://${__dirname}/two.html`)
+  mainWindow2.webContents.openDevTools();
+  mainWindow2.on('closed', () => {
+    mainWindow2 = null
+  })
+  mainWindow2.once('ready-to-show', () => {
+    mainWindow2.show();
+  })
+}
+
 app.on('ready', function () {
+  tray = new Tray(iconPath);
   createWindow();
   const template = [
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'New',
+          click() {
+            createWindow2();
+          }
+        },
+        {
+          label: 'Quit',
+          click() {
+            app.quit()
+          }
+        }
+      ]
+    },
     {
       label: 'Edit',
       submenu: [
@@ -66,6 +100,7 @@ app.on('ready', function () {
       submenu: [
         {
           label: 'sub menu 1',
+          type: 'radio',
           click: function () {
             console.log('CLick Sub Menu 1');
           }
@@ -74,7 +109,8 @@ app.on('ready', function () {
           type: 'separator'
         },
         {
-          label: 'sub menu 2'
+          label: 'sub menu 2',
+          type: 'radio'
         }
       ]
     },
@@ -86,12 +122,13 @@ app.on('ready', function () {
           click: function () {
             electron.shell.openExternal('http://electron.atom.io')
           },
-          accelerator: 'CmdOrCtrl + H'
+          accelerator: 'CmdOrCtrl + Shift + H'
         }
       ]
     }
   ]
   const menu = Menu.buildFromTemplate(template)
+  tray.setContextMenu(menu)
   Menu.setApplicationMenu(menu);
 
   const ctxMenu = new Menu()

@@ -1,5 +1,5 @@
 h1 {
-    color: orange;
+    color: orange !important;
 }
 
 body { 
@@ -10,4 +10,8 @@ body {
     overflow: hidden;
     border-radius: 10px;
     -webkit-app-region: drag;
+}
+
+.mainWrapper {
+    margin: 50px;
 }

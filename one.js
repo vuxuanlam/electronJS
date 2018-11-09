@@ -1,14 +1,23 @@
 console.log('from one.js');
 const electron = require('electron')
 const ipc = electron.ipcRenderer
+const shell = electron.shell
 const BrowserWindow = require("electron").remote.BrowserWindow;
 const newWindow = document.getElementById("newWindow");
 const errBtn = document.getElementById("errorBtn");
 const syncBtn = document.getElementById("syncBtn");
+const shellBtn = document.getElementById("shellBtn");
+
 newWindow.addEventListener('click', function (event) {
     let mainWindow3 = new BrowserWindow();
     mainWindow3.loadURL(`file://${__dirname}/three.html`);
     mainWindow3.webContents.openDevTools();
+})
+
+shellBtn.addEventListener('click', function () {
+    shell.showItemInFolder('C:\\Users\\vu_xuan_lam\\Desktop\\react-typescript\\src\\public\\favicon.ico');
+    shell.openItem('C:/Users/vu_xuan_lam/Desktop/react-typescript/src/public/favicon.ico');
+    shell.openExternal('https://electronjs.org/docs/api/browser-window#browserwindowgetfocusedwindow')
 })
 
 errBtn.addEventListener('click', function (event) {
