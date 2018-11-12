@@ -13,4 +13,4 @@ setInterval(function() {
         let randomQuote = bodyJson[0]["content"]
         document.getElementById("quote").innerHTML = randomQuote;
     })
-}, 3000)
+}, 30000)

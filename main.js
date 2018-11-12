@@ -1,5 +1,6 @@
 const electron = require('electron')
 const path = require('path')
+const url = require('url')
 const app = electron.app
 const ipc = electron.ipcMain
 const BrowserWindow = electron.BrowserWindow
@@ -11,12 +12,19 @@ const iconPath = path.join(__dirname, 'favicon.ico')
 const globalShortcut = electron.globalShortcut
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
+// set env
+process.env.NODE_ENV = 'production'; 
 let mainWindow1, mainWindow2, parentWindow, childWindow;
 let tray = null;
 
 function createWindow() {
   mainWindow1 = new BrowserWindow({ width: 800, height: 600 })
-  mainWindow1.loadURL(`file://${__dirname}/one.html`)
+  // mainWindow1.loadURL(`file://${__dirname}/one.html`)
+  mainWindow1.loadURL(url.format({
+    pathname: path.join(__dirname, 'one.html'),
+    protocol: 'file',
+    slashes: true
+  }));
   // mainWindow1.webContents.openDevTools();
   mainWindow1.on('closed', () => {
     mainWindow1 = null
@@ -30,9 +38,6 @@ function createWindow() {
   ipc.on('sync-message', function (event) {
     event.returnValue = 'sync-reply';
   })
-  // mainWindow2.once('ready-to-show', () => {
-  //   mainWindow2.show();
-  // })
 
   // parentWindow = new BrowserWindow({ title: "parent" });
   // childWindow = new BrowserWindow({ show: false, parent: parentWindow, title: 'child' });
@@ -42,9 +47,15 @@ function createWindow() {
   // });
 }
 
-function createWindow2() {
+function createAddWindow() {
   mainWindow2 = new BrowserWindow({ show: false, width: 800, height: 600, frame: false })
   mainWindow2.loadURL(`file://${__dirname}/two.html`)
+  //catch item:add
+  ipc.on('item:add', function (e, item) {
+    console.log(item);
+    mainWindow2.webContents.send('item:add', item);
+    item = '';
+  })
   // mainWindow2.webContents.openDevTools();
   mainWindow2.on('closed', () => {
     mainWindow2 = null
@@ -62,9 +73,10 @@ app.on('ready', function () {
       label: 'File',
       submenu: [
         {
-          label: 'New',
+          label: 'Add Item',
+          accelerator: 'Ctrl + N',
           click() {
-            createWindow2();
+            createAddWindow();
           }
         },
         {
@@ -83,7 +95,10 @@ app.on('ready', function () {
           }
         },
 
-        { role: 'reload' },
+        {
+          role: 'reload',
+          accelerator: 'CmdOrCtrl + R'
+        },
 
         {
           label: 'Quit',

@@ -5,16 +5,59 @@
   <meta charset="UTF-8">
   <title>Electron Hello World!</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="bootstrap.min.css">
 </head>
 
 <body>
-  <h1>Electron Hello World!</h1>
-  <div id="quote">
-
+  <div class="mainWrapper">
+    <h1>Electron Hello World!</h1>
+    <div id="quote">
+    </div>
+    <form>
+      <legend>Todo List</legend>
+      <div class="form-group">
+        <input type="text" class="form-control" id="addItem" placeholder="Input field" autofocus required>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Item</button>
+    </form>
+    <ul></ul>
+    <button id="btnClear" class="btn btn-primary">Clear List</button>
   </div>
-  
   <script>
     require("./two.js")
+  </script>
+  <script>
+    const electron = require('electron');
+    const { ipcRenderer } = electron;
+    //get form 
+    const form = document.querySelector('form');
+    form.addEventListener('submit', submitForm);
+    function submitForm(e) {
+      e.preventDefault();
+      const item = document.querySelector('#addItem').value;
+      ipcRenderer.send('item:add', item)
+    }
+
+    // get ul add add li
+    const ul = document.querySelector('ul');
+    ipcRenderer.on('item:add', function (e, item) {
+      const li = document.createElement('li');
+      const itemText = document.createTextNode(item);
+      li.appendChild(itemText);
+      ul.appendChild(li);
+    });
+
+    // clear item
+    const btnClear = document.getElementById('btnClear')
+    btnClear.addEventListener('click', function () {
+      ul.innerHTML = ''
+    })
+
+    //remove item
+    ul.addEventListener('dblclick', removeItem);
+    function removeItem(e) {
+      e.target.remove();
+    }
   </script>
 </body>
 
