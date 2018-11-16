@@ -1,0 +1,22 @@
+{
+	"File": "File",
+	"Add Item": "Add Item",
+	"Toogle DevTool" : "Toogle DevTool" ,
+	"Reload" : "Reload",
+	"Quit" : "Quit",
+	"Edit": "Edit",
+	"Undo": "Undo",
+	"Redo": "Redo",
+	"Cut": "Cut",
+	"Copy": "Copy",
+	"Paste": "Paste",
+	"Paste and Match Style": "Paste and Match Style",
+	"Delete": "Delete",
+	"Select all": "Select all",
+	"View": "View",
+	"demo": "demo",
+	"sub menu 1": "sub menu 1",
+	"sub menu 2": "sub menu 2",
+	"Help": "Help",
+	"about electron": "about electron"
+}

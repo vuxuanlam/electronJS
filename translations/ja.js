@@ -1,0 +1,22 @@
+{
+	"File": "Tệp",
+	"Add Item": "Thêm cửa sổ",
+	"Toogle DevTool" : "Kiểm tra phần tử" ,
+	"Reload" : "Tải lại",
+	"Quit" : "Thoát",
+	"Edit": "Sửa",
+	"Undo": "Hoàn tác",
+	"Redo": "Thực hiện lại",
+	"Cut": "Cắt",
+	"Copy": "Sao chép",
+	"Paste": "Dán",
+	"Paste and Match Style": "Dán và bắt kiểu",
+	"Delete": "Xóa",
+	"Select all": "Chọn tất cả",
+	"View": "Xem",
+	"demo": "demo",
+	"sub menu 1": "Menu con 1",
+	"sub menu 2": "Menu con 2",
+	"Help": "Trợ giúp",
+	"about electron": "Trang chủ electron"
+}

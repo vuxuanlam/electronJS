@@ -1,5 +1,6 @@
-console.log('from one.js');
+
 const electron = require('electron')
+let app = electron.app ? electron.app : electron.remote.app
 const ipc = electron.ipcRenderer
 const shell = electron.shell
 const BrowserWindow = require("electron").remote.BrowserWindow;

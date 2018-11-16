@@ -10,10 +10,11 @@ const MenuItem = electron.MenuItem
 const Tray = electron.Tray
 const iconPath = path.join(__dirname, 'favicon.ico')
 const globalShortcut = electron.globalShortcut
+var i18n = new (require('./translations/i18n'))
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 // set env
-process.env.NODE_ENV = 'production'; 
+process.env.NODE_ENV = 'production';
 let mainWindow1, mainWindow2, parentWindow, childWindow;
 let tray = null;
 
@@ -73,14 +74,14 @@ app.on('ready', function () {
       label: 'File',
       submenu: [
         {
-          label: 'Add Item',
+          label: i18n.__('Add Item'),
           accelerator: 'Ctrl + N',
           click() {
             createAddWindow();
           }
         },
         {
-          label: 'Toogle DevTool',
+          label: i18n.__('Toogle DevTool'),
           accelerator: (function () {
             if (process.platform === 'darwin') {
               return 'Ctrl+Command+F'
@@ -96,12 +97,13 @@ app.on('ready', function () {
         },
 
         {
+          label: i18n.__('Reload'),
           role: 'reload',
           accelerator: 'CmdOrCtrl + R'
         },
 
         {
-          label: 'Quit',
+          label: i18n.__('Quit'),
           accelerator: 'CmdOrCtrl + Q',
           click() {
             app.quit()
@@ -110,24 +112,24 @@ app.on('ready', function () {
       ]
     },
     {
-      label: 'Edit',
+      label: i18n.__('Edit'),
       submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
+        { label: i18n.__('Undo'), role: 'undo' },
+        { label: i18n.__('Redo'), role: 'redo' },
         { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'pasteandmatchstyle' },
-        { role: 'delete' },
-        { role: 'selectall' }
+        { label: i18n.__('Cut'), role: 'undo', role: 'cut' },
+        { label: i18n.__('Copy'), role: 'copy' },
+        { label: i18n.__('Paste'), role: 'paste' },
+        { label: i18n.__('Paste and Match Style'), role: 'pasteandmatchstyle' },
+        { label: i18n.__('Delete'), role: 'delete' },
+        { label: i18n.__('Select All'), role: 'selectall' }
       ]
     },
     {
-      label: 'demo',
+      label: i18n.__('demo'),
       submenu: [
         {
-          label: 'sub menu 1',
+          label: i18n.__('sub menu 1'),
           type: 'radio',
           click: function () {
             console.log('CLick Sub Menu 1');
@@ -137,16 +139,16 @@ app.on('ready', function () {
           type: 'separator'
         },
         {
-          label: 'sub menu 2',
+          label: i18n.__('sub menu 2'),
           type: 'radio'
         }
       ]
     },
     {
-      label: 'Help',
+      label: i18n.__('Help'),
       submenu: [
         {
-          label: 'about electron',
+          label: i18n.__('about electron'),
           click: function () {
             electron.shell.openExternal('http://electron.atom.io')
           },
